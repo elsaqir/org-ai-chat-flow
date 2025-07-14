@@ -50,21 +50,21 @@ export function ChatBubble({ message, organizationLogo }: ChatBubbleProps) {
             <img 
               src={organizationLogo} 
               alt="Organization logo"
-              className="w-8 h-8 rounded-full object-cover"
+              className="w-9 h-9 rounded-2xl object-cover shadow-lg"
             />
           ) : (
-            <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-2xl bg-gray-100 flex items-center justify-center shadow-lg">
               <Building2 className="w-4 h-4 text-gray-500" />
             </div>
           )}
         </div>
       )}
       
-      <div className={`flex flex-col gap-1 max-w-xs ${isUser ? 'items-end' : 'items-start'}`}>
-        <Card className={`p-3 relative ${
+      <div className={`flex flex-col gap-1 max-w-sm ${isUser ? 'items-end' : 'items-start'}`}>
+        <Card className={`p-4 relative shadow-lg backdrop-blur-sm border-0 ${
           isUser 
-            ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/25 border-0' 
-            : 'bg-white text-gray-900 shadow-sm border-border'
+            ? 'bg-gradient-to-br from-orange-500 via-orange-600 to-orange-700 text-white shadow-orange-500/25' 
+            : 'bg-white/90 text-gray-900 shadow-gray-900/10'
         }`}>
           <p className="text-sm leading-relaxed whitespace-pre-wrap">
             {message.content}
@@ -81,7 +81,7 @@ export function ChatBubble({ message, organizationLogo }: ChatBubbleProps) {
       
       {isUser && (
         <div className="flex-shrink-0">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 flex items-center justify-center">
+          <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-orange-500 via-orange-600 to-orange-700 flex items-center justify-center shadow-lg shadow-orange-500/30">
             <User className="w-4 h-4 text-white" />
           </div>
         </div>

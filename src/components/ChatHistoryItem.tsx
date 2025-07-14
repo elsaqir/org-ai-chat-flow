@@ -1,5 +1,6 @@
 import { MessageCircle, Building2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 interface ChatHistory {
   id: string;
@@ -35,11 +36,12 @@ export function ChatHistoryItem({ chat, onSelect, isSelected }: ChatHistoryItemP
 
   return (
     <Card 
-      className={`p-3 cursor-pointer transition-all duration-200 hover:shadow-sm border ${
+      className={cn(
+        "group p-4 cursor-pointer transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/20 border backdrop-blur-sm",
         isSelected 
-          ? 'border-primary shadow-lg shadow-orange-500/25 bg-gradient-to-b from-gray-50 to-gray-100' 
-          : 'border-border hover:border-gray-300'
-      }`}
+          ? 'border-orange-300 shadow-lg shadow-orange-500/20 bg-gradient-to-br from-orange-50 to-orange-100/50 ring-1 ring-orange-200' 
+          : 'border-gray-200/60 hover:border-gray-300/80 bg-white/60 hover:bg-white/80'
+      )}
       onClick={() => onSelect(chat.id)}
     >
       <div className="flex items-start gap-3">

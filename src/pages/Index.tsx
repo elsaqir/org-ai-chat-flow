@@ -1,11 +1,8 @@
 import { useState, useEffect } from "react";
-import { Search, Plus, Filter, MessageSquare } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { OrganizationCard } from "@/components/OrganizationCard";
-import { ChatHistoryItem } from "@/components/ChatHistoryItem";
+import { UnifiedSidebar } from "@/components/UnifiedSidebar";
 import { ChatWindow } from "@/components/ChatWindow";
 import { 
   organizations, 
@@ -22,37 +19,6 @@ const Index = () => {
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [chatSearchQuery, setChatSearchQuery] = useState("");
-  const [filteredOrganizations, setFilteredOrganizations] = useState(organizations);
-  const [filteredChats, setFilteredChats] = useState(chatHistories);
-
-  // Filter organizations based on search
-  useEffect(() => {
-    if (!searchQuery.trim()) {
-      setFilteredOrganizations(organizations);
-    } else {
-      const filtered = organizations.filter(org =>
-        org.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        org.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        org.description.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setFilteredOrganizations(filtered);
-    }
-  }, [searchQuery]);
-
-  // Filter chat history based on search
-  useEffect(() => {
-    if (!chatSearchQuery.trim()) {
-      setFilteredChats(chatHistories);
-    } else {
-      const filtered = chatHistories.filter(chat =>
-        chat.organizationName.toLowerCase().includes(chatSearchQuery.toLowerCase()) ||
-        chat.lastMessage.toLowerCase().includes(chatSearchQuery.toLowerCase())
-      );
-      setFilteredChats(filtered);
-    }
-  }, [chatSearchQuery]);
 
   const handleOrganizationSelect = (org: Organization) => {
     setSelectedOrganization(org);
@@ -140,85 +106,17 @@ const Index = () => {
   };
 
   return (
-    <div className="h-screen flex bg-gray-50">
-      {/* Left Sidebar - Organizations */}
-      <div className="w-80 bg-white border-r border-border flex flex-col shadow-subtle">
-        <div className="p-6 border-b border-border">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-xl font-semibold text-gray-900">Organizations</h1>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-gray-500 hover:text-gray-700"
-            >
-              <Filter className="w-4 h-4" />
-            </Button>
-          </div>
-          
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-            <Input
-              placeholder="Search organizations..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 rounded-xl border-gray-200"
-            />
-          </div>
-        </div>
-
-        <ScrollArea className="flex-1 p-3">
-          <div className="space-y-2">
-            {filteredOrganizations.map((org) => (
-              <OrganizationCard
-                key={org.id}
-                organization={org}
-                onSelect={handleOrganizationSelect}
-                isSelected={selectedOrganization?.id === org.id}
-              />
-            ))}
-          </div>
-        </ScrollArea>
-      </div>
-
-      {/* Right Sidebar - Chat History */}
-      <div className="w-80 bg-white border-r border-border flex flex-col shadow-subtle">
-        <div className="p-6 border-b border-border">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-gray-900">Chats</h2>
-            <Button
-              onClick={startNewChat}
-              variant="gradient"
-              size="sm"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              New Chat
-            </Button>
-          </div>
-          
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-            <Input
-              placeholder="Search chats..."
-              value={chatSearchQuery}
-              onChange={(e) => setChatSearchQuery(e.target.value)}
-              className="pl-9 rounded-xl border-gray-200"
-            />
-          </div>
-        </div>
-
-        <ScrollArea className="flex-1 p-3">
-          <div className="space-y-2">
-            {filteredChats.map((chat) => (
-              <ChatHistoryItem
-                key={chat.id}
-                chat={chat}
-                onSelect={handleChatSelect}
-                isSelected={selectedChat === chat.id}
-              />
-            ))}
-          </div>
-        </ScrollArea>
-      </div>
+    <div className="h-screen flex bg-gradient-to-br from-gray-50 via-white to-gray-100">
+      {/* Unified Sidebar */}
+      <UnifiedSidebar
+        organizations={organizations}
+        chatHistories={chatHistories}
+        selectedOrganization={selectedOrganization}
+        selectedChat={selectedChat}
+        onOrganizationSelect={handleOrganizationSelect}
+        onChatSelect={handleChatSelect}
+        onNewChat={startNewChat}
+      />
 
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col">
@@ -230,28 +128,34 @@ const Index = () => {
             isTyping={isTyping}
           />
         ) : (
-          <div className="flex-1 flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100">
-            <Card className="p-8 max-w-md text-center shadow-main border-0">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 flex items-center justify-center mx-auto mb-6">
-                <MessageSquare className="w-8 h-8 text-white" />
+          <div className="flex-1 flex items-center justify-center">
+            <Card className="p-12 max-w-lg text-center bg-white/80 backdrop-blur-xl border-gray-200/50 shadow-2xl shadow-gray-900/10">
+              <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-orange-500 via-orange-600 to-orange-700 flex items-center justify-center mx-auto mb-8 shadow-xl shadow-orange-500/30">
+                <MessageSquare className="w-10 h-10 text-white" />
               </div>
               
-              <h3 className="text-2xl font-semibold text-gray-900 mb-4">
+              <h3 className="text-3xl font-bold text-gray-900 mb-4 tracking-tight">
                 Welcome to OrgChat
               </h3>
               
-              <p className="text-gray-500 mb-6 leading-relaxed">
+              <p className="text-gray-600 mb-8 leading-relaxed text-lg">
                 Connect with verified organizations for instant support, information, and services. 
-                Select an organization from the left panel to start a conversation.
+                Choose an agent or start a new conversation to begin.
               </p>
               
-              <Button
-                onClick={startNewChat}
-                variant="gradient"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Start New Chat
-              </Button>
+              <div className="flex flex-col gap-3">
+                <Button
+                  onClick={startNewChat}
+                  variant="gradient"
+                  className="h-12 px-8 text-base font-medium rounded-2xl shadow-lg shadow-orange-500/25"
+                >
+                  <MessageSquare className="w-5 h-5 mr-3" />
+                  Start Your First Conversation
+                </Button>
+                <p className="text-sm text-gray-400 mt-2">
+                  Available 24/7 • Secure • Instant responses
+                </p>
+              </div>
             </Card>
           </div>
         )}
