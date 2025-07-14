@@ -24,6 +24,26 @@ export default {
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
+				
+				// Custom Gray Scale
+				gray: {
+					50: 'hsl(var(--gray-50))',
+					100: 'hsl(var(--gray-100))',
+					200: 'hsl(var(--gray-200))',
+					300: 'hsl(var(--gray-300))',
+					400: 'hsl(var(--gray-400))',
+					500: 'hsl(var(--gray-500))',
+					700: 'hsl(var(--gray-700))',
+					900: 'hsl(var(--gray-900))',
+				},
+				
+				// Orange System
+				orange: {
+					500: 'hsl(var(--orange-500))',
+					600: 'hsl(var(--orange-600))',
+					700: 'hsl(var(--orange-700))',
+				},
+				
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))'
@@ -62,6 +82,20 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				}
+			},
+			
+			// Custom Gradients
+			backgroundImage: {
+				'gradient-primary': 'var(--gradient-primary)',
+				'gradient-primary-hover': 'var(--gradient-primary-hover)',
+				'gradient-subtle': 'var(--gradient-subtle)',
+			},
+			
+			// Apple-inspired Box Shadows
+			boxShadow: {
+				'subtle': 'var(--shadow-subtle)',
+				'main': 'var(--shadow-main)',
+				'orange': 'var(--shadow-orange)',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
